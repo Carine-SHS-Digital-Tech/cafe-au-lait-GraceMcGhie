@@ -8,7 +8,7 @@ ORDER_DICTIONARY = {'ORDER_ID': [], 'TYPE': [],
 PRICES = {'cappuccino': 3, 'espresso': 2.25, 'latte': 2.5, 'iced coffee': 2.5}
 while True:  #Infinite looped program
     mode = input("What Mode of operation would you like to use (New Order or Daily Summary): ")
-    if mode == "new order": #New Order (Default)
+    if mode.lower() == "new order": #New Order (Default)
         print("\nNew Order\n")
         ORDER_DICTIONARY['TYPE'].append(input('Would you like takeaway or dine in (takeaway incurs a 5% surcharge): '))
         print('\n4 available items\n Cappuccino : $3.00 \n Espresso : $2.25 \n Latte : $2.50 \n Iced_Coffee: $2.50\n\n')
@@ -26,7 +26,12 @@ while True:  #Infinite looped program
                 ORDER_DICTIONARY[ITEM].append(IITEM)
             QTY = (f"QTY_{count}")
             IQTY = int(input('What quantity of the coffee would you like: '))
-            ORDER_DICTIONARY[QTY].append(IQTY)
+            if IQTY > 0:
+                ORDER_DICTIONARY[QTY].append(IQTY)
+            else:
+                while IQTY < 1:
+                    IQTY = int(input('Wrong input.Try again.\nWhat quantity of the coffee would you like: '))
+                ORDER_DICTIONARY[QTY].append(IQTY)
             EXGST = (f"EXGST_{count}")
             IITEM = IITEM.lower()
             IEXGST = PRICES[IITEM]*IQTY
