@@ -19,11 +19,11 @@ while True:  # Infinite looped program
 
         print('\n4 available items\n Cappuccino : $3.00 \n Espresso : $2.25 \n Latte : $2.50 \n Iced_Coffee: $2.50\n\n')  # Showing the 4 line item options
         LOOP_COUNT = 0
-        for x in range(0, 4):
+        for x in range(0, 4):  # loop allowing for 4 inputs for each item
             LOOP_COUNT = LOOP_COUNT + 1
             ITEM = f'ITEM_{LOOP_COUNT}'
-            IITEM = input('What coffee from the list above would you like: ')
-            if IITEM.lower() in ['cappuccino', 'espresso', 'latte', 'iced coffee']:
+            IITEM = input('What coffee from the list above would you like: ')  # Input for ITEM
+            if IITEM.lower() in ['cappuccino', 'espresso', 'latte', 'iced coffee']:  # Data validation for ITEM
                 ORDER_DICTIONARY[ITEM].append(IITEM)
             else:
                 while IITEM.lower() not in ['cappuccino', 'espresso', 'latte', 'iced coffee']:
@@ -31,8 +31,8 @@ while True:  # Infinite looped program
                     IITEM = IITEM.lower()
                 ORDER_DICTIONARY[ITEM].append(IITEM)
             QTY = f"QTY_{LOOP_COUNT}"
-            IQTY = int(input('What quantity of the coffee would you like: '))
-            if IQTY > 0:
+            IQTY = int(input('What quantity of the coffee would you like: '))  # Input for QTY
+            if IQTY > 0:  # Data validation for QTY
                 ORDER_DICTIONARY[QTY].append(IQTY)
             else:
                 while IQTY < 1:
