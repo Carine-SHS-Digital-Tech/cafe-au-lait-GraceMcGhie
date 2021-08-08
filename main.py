@@ -6,21 +6,20 @@ ORDER_ID_COUNT = 0  # The ORDER_ID count
 def order_function():
     ITEM = f'ITEM_{LOOP_COUNT}'
     IITEM = input('What coffee from the list above would you like: ')  # Input for ITEM
-    if IITEM.lower() in ['cappuccino', 'espresso', 'latte', 'iced coffee']:  # Data validation for ITEM
-        ORDER_DICTIONARY[ITEM].append(IITEM)
-    else:
-        while IITEM.lower() not in ['cappuccino', 'espresso', 'latte', 'iced coffee']:
-            IITEM = input('Wrong input.Try again.\nWhat coffee from the list above would you like: ')
-            IITEM = IITEM.lower()
-        ORDER_DICTIONARY[ITEM].append(IITEM)
+    while IITEM.lower() not in ['cappuccino', 'espresso', 'latte', 'iced coffee']:# Data validation for ITEM
+        IITEM = input('Wrong input.Try again.\nWhat coffee from the list above would you like: ')
+        IITEM = IITEM.lower()
+    ORDER_DICTIONARY[ITEM].append(IITEM)
     QTY = f"QTY_{LOOP_COUNT}"
-    IQTY = int(input('What quantity of the coffee would you like: '))  # Input for QTY
-    if IQTY > 0:  # Data validation for QTY
-        ORDER_DICTIONARY[QTY].append(IQTY)
-    else:
-        while IQTY < 1:
-            IQTY = int(input('Wrong input.Try again.\nWhat quantity of the coffee would you like: '))
-        ORDER_DICTIONARY[QTY].append(IQTY)
+    while True:# Data validation for QTY
+        try:
+            IQTY = int(input('What quantity of the coffee would you like: '))  # Input for QTY
+            break
+        except ValueError:
+            print('Wrong input.Try again.')
+    while IQTY < 1:
+        IQTY = int(input('Wrong input.Try again.\nWhat quantity of the coffee would you like: '))
+    ORDER_DICTIONARY[QTY].append(IQTY)
     EXGST = f"EXGST_{LOOP_COUNT}"
     IITEM = IITEM.lower()
     IEXGST = PRICES[IITEM] * IQTY
