@@ -2,7 +2,13 @@ from tabulate import tabulate
 # NESTED DICTIONARY TO HOLD EACH ORDER
 ORDER_DICTIONARY = {'ORDER_ID': [], 'TYPE': [], 'ITEM_1': [], 'QTY_1': [], 'EXGST_1': [], 'ITEM_2': [], 'QTY_2': [], 'EXGST_2': [], 'ITEM_3': [], 'QTY_3': [], 'EXGST_3': [], 'ITEM_4': [], 'QTY_4': [], 'EXGST_4': [], 'ORDER_TOTAL': []}
 PRICES = {'cappuccino': 3, 'espresso': 2.25, 'latte': 2.5, 'iced coffee': 2.5}
-ORDER_ID_COUNT = 0  # The ORDER_ID count
+ORDER_ID_COUNT = 0
+CAPPUCCINO_COUNT = 0
+ESPRESSO_COUNT = 0
+LATTE_COUNT = 0
+ICED_COFFEE_COUNT = 0
+GST_COLLECTED = 0
+DAILY_INCOME = 0
 
 def order_function():
     ITEM = f'ITEM_{LOOP_COUNT}'
@@ -12,7 +18,6 @@ def order_function():
         IITEM = IITEM.lower()
     ORDER_DICTIONARY[ITEM].append(IITEM)
     QTY = f"QTY_{LOOP_COUNT}"
-
     while True:  # Data validation for QTY
         try:
             IQTY = int(input('What quantity of the coffee would you like: '))  # Input for QTY
@@ -26,6 +31,14 @@ def order_function():
     IITEM = IITEM.lower()
     IEXGST = PRICES[IITEM] * IQTY
     ORDER_DICTIONARY[EXGST].append(IEXGST)
+    count(IITEM, 'cappuccino', CAPPUCCINO_COUNT)
+    count(IITEM, 'espresso', ESPRESSO_COUNT)
+    count(IITEM, 'latte', LATTE_COUNT)
+    count(IITEM, 'iced coffee', ICED_COFFEE_COUNT)
+
+def count(i,coffee,counter):
+    if i.lower() == coffee:
+        counter = counter + 1
 
 def order_filler():
     ITEM = f'ITEM_{LOOP_COUNT}'
@@ -35,8 +48,9 @@ def order_filler():
     EXGST = f"EXGST_{LOOP_COUNT}"
     ORDER_DICTIONARY[EXGST].append("0")
 
-
-
+def cups(number):
+    for cups in range(0, len(ORDER_DICTIONARY[f'ITEM_{number}'])):
+        cup_count = cup_count + ORDER_DICTIONARY[cups]
 
 while True:  # Infinite looped program
     mode = input("What Mode of operation would you like to use (New Order or Daily Summary): ")
@@ -69,9 +83,18 @@ while True:  # Infinite looped program
         while LOOP_COUNT < 4:
             LOOP_COUNT = LOOP_COUNT + 1
             order_filler()
+        y = ORDER_ID_COUNT - 1
+        GST_1 = ORDER_DICTIONARY['EXGST_1'][y] * 0.1
+        GST_2 = ORDER_DICTIONARY['EXGST_2'][y] * 0.1
+        GST_3 = ORDER_DICTIONARY['EXGST_3'][y] * 0.1
+        GST_4 = ORDER_DICTIONARY['EXGST_4'][y] * 0.1
+        GST_COLLECTED = GST_1 + GST_2 + GST_3 + GST_4
+        Total_1 = ORDER_DICTIONARY['EXGST_1'][y] + GST_1
+        Total_2 = ORDER_DICTIONARY['EXGST_2'][y] + GST_2
+        Total_3 = ORDER_DICTIONARY['EXGST_3'][y] + GST_3
+        Total_4 = ORDER_DICTIONARY['EXGST_4'][y] + GST_4
 
-
-        Info_Display = [ORDER_ID_COUNT]
+        Info_Display = [['','Quantity', 'Item', 'Price', 'GST', 'Total'], ['Item 1', ORDER_DICTIONARY['QTY_1'][y], ORDER_DICTIONARY['ITEM_1_1'][y],ORDER_DICTIONARY['EXGST_1'][y],  ], ['Item 2'], ['Item 3'], ['Item 4'], ['Total'], ['Cash'], ['Change']]
         print(Info_Display)
 
         amount_tendered = int(input('How much money paid: '))
@@ -83,43 +106,34 @@ while True:  # Infinite looped program
         #  No.dine ins
         Dine_In = 0
         for t in range(0, len(ORDER_DICTIONARY['TYPE'])):
-            if t.lower() == 'dine in':
-                Takeaway = Takeaway + 1
+            if t == 'dine in':
+                Dine_In = Dine_In + 1
         ORDER_DICTIONARY['DINE-IN'] = Dine_In
         #  No. takeaways
         Takeaway = 0
         for t in range(0,len(ORDER_DICTIONARY['TYPE'])):
-            if t.lower() == 'takeaway':
+            if t == 'takeaway':
                 Takeaway = Takeaway + 1
         ORDER_DICTIONARY['TAKE_AWAY'] = Takeaway
         #  Total number of cappuccinos
-
-
+        ORDER_DICTIONARY['CAPPUCCINO_COUNT'] = CAPPUCCINO_COUNT
         #  Total number of espressos
-
-
+        ORDER_DICTIONARY['ESPRESSO_COUNT'] = ESPRESSO_COUNT
         #  Total number of latte
-
-
+        ORDER_DICTIONARY['LATTE_COUNT'] = LATTE_COUNT
         #  Total number of ice coffee
-
-
+        ORDER_DICTIONARY['ICED_COFFEE_COUNT'] = ICED_COFFEE_COUNT
         #  Total number of cups of coffee
         cup_count = 0
-        def cups (number)
-            for cups in range(0,len(ORDER_DICTIONARY[f'ITEM_{number}'])):
-                cup_count = cup_count + ORDER_DICTIONARY[cups]
         cups(1)
         cups(2)
         cups(3)
         cups(4)
         ORDER_DICTIONARY['CUPS_COUNT'] = cup_count
-        #  Total Day's income
 
-        #  Total Day's GST
-
-
-        SUMMARY = [['ORDERS_COUNT' ,'DINE-IN' , 'TAKE_AWAY','CAPPUCCINO_COUNT' ,'ESPRESSO_COUNT','LATTE_COUNT' ,'ICED COFFEE_COUNT','CUPS_COUNT','DAILY_INCOME'],[ORDER_DICTIONARY['ORDERS_COUNT'],ORDER_DICTIONARY['DINE-IN'],ORDER_DICTIONARY['TAKE_AWAY']]]
+        ORDER_DICTIONARY['GST_COLLECTED'] = GST_COLLECTED  #  Total Day's GST
+        ORDER_DICTIONARY['DAILY_INCOME'] = DAILY_INCOME  #   Total Day's income
+        SUMMARY = [['ORDERS_COUNT', 'DINE_IN', 'TAKE_AWAY', 'CAPPUCCINO_COUNT', 'ESPRESSO_COUNT', 'LATTE_COUNT', 'ICED_COFFEE_COUNT', 'CUPS_COUNT', 'GST_COLLECTED', 'DAILY_INCOME'],[ORDER_DICTIONARY['ORDERS_COUNT'],ORDER_DICTIONARY['DINE-IN'],ORDER_DICTIONARY['TAKE_AWAY'], ORDER_DICTIONARY['CAPPUCCINO_COUNT'], ORDER_DICTIONARY['ESPRESSO_COUNT'], ORDER_DICTIONARY['LATTE_COUNT'], ORDER_DICTIONARY[ 'ICED_COFFEE_COUNT'], ORDER_DICTIONARY['CUPS_COUNT'], ORDER_DICTIONARY['GST_COLLECTED'], ORDER_DICTIONARY['DAILY_INCOME']]]
         print(tabulate(SUMMARY))
     else:  # Incorrect input
         print("wrong input")
