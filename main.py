@@ -59,13 +59,19 @@ while True:  # Infinite looped program
         LOOP_COUNT =  1
         order_function()
         New_Order = input('Would you like to order a different coffee (Yes or No)? ')
+        while New_Order.lower() not in ['yes', 'no']:
+            New_Order = input('Wrong input.Try again.\nIncorrect Would you like to order a different coffee (Yes or No)? ')
         while New_Order.lower() == 'yes' and LOOP_COUNT >= 4 :
             LOOP_COUNT = LOOP_COUNT + 1
             order_function()
             New_Order = input('Would you like to order a different coffee (Yes or No)? ')
+            while New_Order.lower() not in ['yes','no']:
+                New_Order = input('Wrong input.Try again.\nIncorrect Would you like to order a different coffee (Yes or No)? ')
+
         while LOOP_COUNT > 4:
             LOOP_COUNT = LOOP_COUNT + 1
             order_filler()
+        print(ORDER_DICTIONARY)
 
 
     elif mode == "daily summary":   # Daily Summary
