@@ -26,6 +26,20 @@ def order_function():
     IEXGST = PRICES[IITEM] * IQTY
     ORDER_DICTIONARY[EXGST].append(IEXGST)
 
+def order_filler():
+    ITEM = f'ITEM_{LOOP_COUNT}'
+    IITEM = ' '
+    ORDER_DICTIONARY[ITEM].append(IITEM)
+    QTY = f"QTY_{LOOP_COUNT}"
+    IQTY = 0
+    ORDER_DICTIONARY[QTY].append(IQTY)
+    EXGST = f"EXGST_{LOOP_COUNT}"
+    IEXGST = 0
+    ORDER_DICTIONARY[EXGST].append(IEXGST)
+
+
+
+
 while True:  # Infinite looped program
     mode = input("What Mode of operation would you like to use (New Order or Daily Summary): ")
     if mode.lower() == "new order":  # New Order (Default)
@@ -42,10 +56,18 @@ while True:  # Infinite looped program
             ORDER_DICTIONARY['TYPE'].append(TYPE)
 
         print('\n4 available items\n Cappuccino : $3.00 \n Espresso : $2.25 \n Latte : $2.50 \n Iced Coffee: $2.50\n\n')  # Showing the 4 line item options
-        LOOP_COUNT = 0
-        for x in range(0, 4):  # loop allowing for 4 inputs for each item
+        LOOP_COUNT =  1
+        order_function()
+        New_Order = input('Would you like to order a different coffee (Yes or No)? ')
+        while New_Order.lower() == 'yes' and LOOP_COUNT >= 4 :
             LOOP_COUNT = LOOP_COUNT + 1
             order_function()
+            New_Order = input('Would you like to order a different coffee (Yes or No)? ')
+        while LOOP_COUNT > 4:
+            LOOP_COUNT = LOOP_COUNT + 1
+            order_filler()
+
+
     elif mode == "daily summary":   # Daily Summary
         print("Daily Summary")
     else:  # Incorrect input
