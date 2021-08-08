@@ -48,9 +48,9 @@ def order_filler():
     EXGST = f"EXGST_{LOOP_COUNT}"
     ORDER_DICTIONARY[EXGST].append("0")
 
-def cups(number):
+def cups(no, number):
     for cups in range(0, len(ORDER_DICTIONARY[f'ITEM_{number}'])):
-        cup_count = cup_count + ORDER_DICTIONARY[cups]
+        no = no + ORDER_DICTIONARY[cups]
 
 while True:  # Infinite looped program
     mode = input("What Mode of operation would you like to use (New Order or Daily Summary): ")
@@ -88,17 +88,31 @@ while True:  # Infinite looped program
         GST_2 = ORDER_DICTIONARY['EXGST_2'][y] * 0.1
         GST_3 = ORDER_DICTIONARY['EXGST_3'][y] * 0.1
         GST_4 = ORDER_DICTIONARY['EXGST_4'][y] * 0.1
-        GST_COLLECTED = GST_1 + GST_2 + GST_3 + GST_4
+        GST_COLLECTED = GST_COLLECTED + GST_1 + GST_2 + GST_3 + GST_4
         Total_1 = ORDER_DICTIONARY['EXGST_1'][y] + GST_1
         Total_2 = ORDER_DICTIONARY['EXGST_2'][y] + GST_2
         Total_3 = ORDER_DICTIONARY['EXGST_3'][y] + GST_3
         Total_4 = ORDER_DICTIONARY['EXGST_4'][y] + GST_4
-
-        Info_Display = [['','Quantity', 'Item', 'Price', 'GST', 'Total'], ['Item 1', ORDER_DICTIONARY['QTY_1'][y], ORDER_DICTIONARY['ITEM_1_1'][y],ORDER_DICTIONARY['EXGST_1'][y],  ], ['Item 2'], ['Item 3'], ['Item 4'], ['Total'], ['Cash'], ['Change']]
-        print(Info_Display)
-
-        amount_tendered = int(input('How much money paid: '))
-
+        if ORDER_DICTIONARY['TYPE'][y].lower() == 'takeaway':
+            Extra = (Total_1 + Total_2 + Total_3 + Total_4)*0.05
+            Total = Total_1 + Total_2 + Total_3 + Total_4 + Extra
+        else:
+            Extra = 0
+            Total = Total_1 + Total_2 + Total_3 + Total_4 + Extra
+        amount_tendered = 0
+        change = 0
+        DAILY_INCOME = DAILY_INCOME + Total
+        Info_Display = [['', 'Quantity', 'Item', 'Price', 'GST', 'Total', 'Extra Charges', 'Full Total'], ['Item 1', ORDER_DICTIONARY['QTY_1'][y], ORDER_DICTIONARY['ITEM_1'][y],ORDER_DICTIONARY['EXGST_1'][y], GST_1, Total_1], ['Item 2', ORDER_DICTIONARY['QTY_2'][y], ORDER_DICTIONARY['ITEM_2'][y],ORDER_DICTIONARY['EXGST_2'][y], GST_2, Total_2], ['Item 3', ORDER_DICTIONARY['QTY_3'][y], ORDER_DICTIONARY['ITEM_3'][y],ORDER_DICTIONARY['EXGST_3'][y], GST_3, Total_3], ['Item 4', ORDER_DICTIONARY['QTY_4'][y], ORDER_DICTIONARY['ITEM_4'][y],ORDER_DICTIONARY['EXGST_4'][y], GST_4, Total_4], ['Total', '', '', '', '', '', Extra,Total], ['Cash', '', '', '', '', '', '', amount_tendered], ['Change', '', '', '', '', '', '', change]]
+        print(tabulate(Info_Display))
+        while True:
+            try:
+                amount_tendered = float(input('How much money paid: '))
+                break
+            except ValueError:
+                print('Wrong input.Try again.')
+        change = amount_tendered - Total
+        print('SALES RECEIPT:')
+        print(tabulate(Info_Display))
     elif mode == "daily summary":   # Daily Summary
         print("\nDaily Summary")
         #  Total Number of Orders
@@ -125,10 +139,10 @@ while True:  # Infinite looped program
         ORDER_DICTIONARY['ICED_COFFEE_COUNT'] = ICED_COFFEE_COUNT
         #  Total number of cups of coffee
         cup_count = 0
-        cups(1)
-        cups(2)
-        cups(3)
-        cups(4)
+        cups(cup_count, 1)
+        cups(cup_count, 2)
+        cups(cup_count, 3)
+        cups(cup_count, 4)
         ORDER_DICTIONARY['CUPS_COUNT'] = cup_count
 
         ORDER_DICTIONARY['GST_COLLECTED'] = GST_COLLECTED  #  Total Day's GST
