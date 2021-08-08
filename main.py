@@ -17,6 +17,7 @@ def order_function():
             break
         except ValueError:
             print('Wrong input.Try again.')
+            pass
     while IQTY < 1:
         IQTY = int(input('Wrong input.Try again.\nWhat quantity of the coffee would you like: '))
     ORDER_DICTIONARY[QTY].append(IQTY)
