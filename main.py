@@ -1,3 +1,4 @@
+from tabulate import tabulate
 # NESTED DICTIONARY TO HOLD EACH ORDER
 ORDER_DICTIONARY = {'ORDER_ID': [], 'TYPE': [], 'ITEM_1': [], 'QTY_1': [], 'EXGST_1': [], 'ITEM_2': [], 'QTY_2': [], 'EXGST_2': [], 'ITEM_3': [], 'QTY_3': [], 'EXGST_3': [], 'ITEM_4': [], 'QTY_4': [], 'EXGST_4': [], 'ORDER_CUPS': [], 'ORDER_GST': [], 'ORDER_TAX': [], 'ORDER_TOTAL': []}
 PRICES = {'cappuccino': 3, 'espresso': 2.25, 'latte': 2.5, 'iced coffee': 2.5}
@@ -11,13 +12,13 @@ def order_function():
         IITEM = IITEM.lower()
     ORDER_DICTIONARY[ITEM].append(IITEM)
     QTY = f"QTY_{LOOP_COUNT}"
+
     while True:# Data validation for QTY
         try:
             IQTY = int(input('What quantity of the coffee would you like: '))  # Input for QTY
             break
         except ValueError:
             print('Wrong input.Try again.')
-            pass
     while IQTY < 1:
         IQTY = int(input('Wrong input.Try again.\nWhat quantity of the coffee would you like: '))
     ORDER_DICTIONARY[QTY].append(IQTY)
@@ -28,14 +29,11 @@ def order_function():
 
 def order_filler():
     ITEM = f'ITEM_{LOOP_COUNT}'
-    IITEM = ' '
-    ORDER_DICTIONARY[ITEM].append(IITEM)
+    ORDER_DICTIONARY[ITEM].append(' ')
     QTY = f"QTY_{LOOP_COUNT}"
-    IQTY = 0
-    ORDER_DICTIONARY[QTY].append(IQTY)
+    ORDER_DICTIONARY[QTY].append("0")
     EXGST = f"EXGST_{LOOP_COUNT}"
-    IEXGST = 0
-    ORDER_DICTIONARY[EXGST].append(IEXGST)
+    ORDER_DICTIONARY[EXGST].append("0")
 
 
 
@@ -56,25 +54,50 @@ while True:  # Infinite looped program
             ORDER_DICTIONARY['TYPE'].append(TYPE)
 
         print('\n4 available items\n Cappuccino : $3.00 \n Espresso : $2.25 \n Latte : $2.50 \n Iced Coffee: $2.50\n\n')  # Showing the 4 line item options
+
         LOOP_COUNT =  1
         order_function()
         New_Order = input('Would you like to order a different coffee (Yes or No)? ')
         while New_Order.lower() not in ['yes', 'no']:
             New_Order = input('Wrong input.Try again.\nIncorrect Would you like to order a different coffee (Yes or No)? ')
-        while New_Order.lower() == 'yes' and LOOP_COUNT >= 4 :
+        while New_Order.lower() == 'yes' and LOOP_COUNT <= 4:
             LOOP_COUNT = LOOP_COUNT + 1
             order_function()
             New_Order = input('Would you like to order a different coffee (Yes or No)? ')
             while New_Order.lower() not in ['yes','no']:
                 New_Order = input('Wrong input.Try again.\nIncorrect Would you like to order a different coffee (Yes or No)? ')
-
-        while LOOP_COUNT > 4:
+        while LOOP_COUNT < 4:
             LOOP_COUNT = LOOP_COUNT + 1
             order_filler()
-        print(ORDER_DICTIONARY)
+        Info_Display = [ORDER_ID_COUNT]
+        print(Info_Display)
 
+        amount_tendered = int(input('How much money paid: '))
 
     elif mode == "daily summary":   # Daily Summary
-        print("Daily Summary")
+        print("\nDaily Summary")
+        #  No. takeaways
+
+        #  No.dine ins
+
+        #  Total Number of Orders
+
+        #  Total number of cups of coffee
+        cup_count
+        for cups in range(0,len(ORDER_DICTIONARY['ITEM_1'])):
+            cup_count = cup_count + ORDER_DICTIONARY[cups]
+        for cups in range(0,len(ORDER_DICTIONARY['ITEM_2'])):
+            cup_count = cup_count + ORDER_DICTIONARY[cups]
+        for cups in range(0,len(ORDER_DICTIONARY['ITEM_3'])):
+            cup_count = cup_count + ORDER_DICTIONARY[cups]
+        for cups in range(0,len(ORDER_DICTIONARY["ITEM_4"])):
+            cup_count = cup_count + ORDER_DICTIONARY[cups]
+        #  Total Day's income
+
+        #  Total Day's GST
+
+
+        SUMMARY = []
+        print(tabulate(SUMMARY))
     else:  # Incorrect input
         print("wrong input")
